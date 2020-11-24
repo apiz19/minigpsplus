@@ -42,19 +42,21 @@ void setup() {
 
   pinMode(3, INPUT);
 
-  Serial.print("Initializing SD card...");
+  Serial.print("checking SD card...");
 
   if (!SD.begin(53)) {
-    Serial.println("initialization failed!");
+    Serial.println("init failed! :(");
   } else {
-    Serial.println("initialization done.");
+    Serial.println("init done. :)");
   }
 
-  Serial.println(F("BMP280 test"));
+  Serial.println(F("checking BMP280.."));
 
   if (!bmp.begin()) {
-    Serial.println(F("Could not find a valid BMP280 sensor, check wiring!"));
+    Serial.println(F("Could not find a valid BMP280 sensor, check wiring! :("));
     while (1);
+  } else {
+	Serial.println(F("OK! :)"));
   }
 
   /* Default settings from datasheet. */
@@ -64,27 +66,32 @@ void setup() {
                   Adafruit_BMP280::FILTER_X16,      /* Filtering. */
                   Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
 
-  u8x8.begin();
-  u8x8.setFont(u8x8_font_chroma48medium8_r);
+  Serial.println(F("checking OLED.."))
+    if (!u8x8.begin()) {
+	Serial.println(F("check wiring!"));
+  } else {
+	Serial.println(F("OLED found :)"));
+	u8x8.setFont(u8x8_font_chroma48medium8_r);
+  }
 
   // Start up screen on OLED
   u8x8.fillDisplay();
-  delay(1000);
+  delay(500);
+
+  u8x8.inverse();
+  u8x8.draw1x2String(8, 4, "MiniGPS+");
+  delay(800);
+  u8x8.noInverse();
+  u8x8.println("Doing");
+  delay(300);
+  u8x8.println("Setup");
+
   for (uint8_t r = 0; r < u8x8.getRows(); r++ )
   {
     u8x8.clearLine(r);
     delay(100);
     u8x8.setInverseFont(1);
   }
-
-  delay(100);
-  u8x8.inverse();
-  u8x8.draw1x2String(8, 4, "MiniGPS+");
-  delay(1000);
-  u8x8.noInverse();
-  u8x8.println("Doing");
-  delay(500);
-  u8x8.println("Setup");
 
   u8x8.inverse();
 
@@ -289,14 +296,14 @@ static void doSomeWork()
       lat_SouthN = "W";
     else
       lat_SouthN = "E";
-      
+
     lat_d1 = abs(lat_dd);
     lat_d = lat_d1;
     lat_m1 = (lat_d1 - lat_d) * 60;
     lat_m = lat_m1;
     lat_s = (lat_m1 - lat_m) * 60;
 
-    
+
     u8x8.setCursor(4, 1);
     u8x8.print(lat_d);         u8x8.print(" ");
     u8x8.print(lat_m);         u8x8.print("'");
