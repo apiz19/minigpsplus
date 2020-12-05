@@ -42,9 +42,9 @@ void setup() {
 
   pinMode(3, INPUT);
 
-  Serial.print("checking SD card...");
+  Serial.println("checking SD card...");
 
-  if (!SD.begin(53)) {
+  if (!SD.begin(48)) {
     Serial.println("init failed! :(");
   } else {
     Serial.println("init done. :)");
@@ -66,7 +66,7 @@ void setup() {
                   Adafruit_BMP280::FILTER_X16,      /* Filtering. */
                   Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
 
-  Serial.println(F("checking OLED.."))
+  Serial.println(F("checking OLED.."));
     if (!u8x8.begin()) {
 	Serial.println(F("check wiring!"));
   } else {
@@ -76,15 +76,12 @@ void setup() {
 
   // Start up screen on OLED
   u8x8.fillDisplay();
-  delay(500);
+  delay(1000);
 
   u8x8.inverse();
-  u8x8.draw1x2String(8, 4, "MiniGPS+");
-  delay(800);
+  u8x8.draw1x2String(4, 3, "MiniGPS+");
+  delay(1300);
   u8x8.noInverse();
-  u8x8.println("Doing");
-  delay(300);
-  u8x8.println("Setup");
 
   for (uint8_t r = 0; r < u8x8.getRows(); r++ )
   {
@@ -138,13 +135,20 @@ static void doSomeWork()
   u8x8.print(LOG[5]);
   u8x8.print("C");
 
+  // Altitude from BM280
+//  u8x8.setCursor(4, 2);
+//  u8x8.print("     ");
+//  u8x8.setCursor(4, 2);
+//  LOG[4] = String(bmp.readAltitude(1013.25), 1);
+//  u8x8.print(LOG[4]);
+//  u8x8.print(" m");
 
+  // Altitude from NEOGPS
   u8x8.setCursor(4, 2);
-  u8x8.print("     ");
+  u8x8.print("      ");
   u8x8.setCursor(4, 2);
-  LOG[4] = String(bmp.readAltitude(1013.25), 1);
-  u8x8.print(LOG[4]);
-  u8x8.print(" m");
+  LOG[4] = String(fix.altitude(), 1);
+  u8x8.print(LOG[4]+" m");
 
   if (log_temp == 1) {
     u8x8.drawString(5, 5, "ON ");
