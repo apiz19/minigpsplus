@@ -45,9 +45,9 @@ void setup() {
   Serial.println("checking SD card...");
 
   if (!SD.begin(48)) {
-    Serial.println("init failed! :(");
+    Serial.println("init FAILED! :(");
   } else {
-    Serial.println("init done. :)");
+    Serial.println("init DONE. :)");
   }
 
   Serial.println(F("checking BMP280.."));
@@ -128,19 +128,32 @@ static void doSomeWork()
     }
   }
 
+  String temp;
   u8x8.setCursor(5, 7);
   u8x8.print("   ");
   u8x8.setCursor(5, 7);
-  LOG[5] = String(bmp.readTemperature(), 0);
-  u8x8.print(LOG[5]);
+  temp = String(bmp.readTemperature(), 0);
+  u8x8.print(temp);
   u8x8.print("C");
+
+  uint8_t minute = fix.dateTime.minutes;
+    // LOG temp interval 30 menit
+    if(minute == 30) {
+        LOG[5] = temp;
+    }
+    else if(minute == 60) {
+        LOG[5] = temp;
+    }
+    else {
+        LOG[5] = "";
+    }
 
   // Altitude from BM280
 //  u8x8.setCursor(4, 2);
 //  u8x8.print("     ");
 //  u8x8.setCursor(4, 2);
-//  LOG[4] = String(bmp.readAltitude(1013.25), 1);
-//  u8x8.print(LOG[4]);
+//  LOG[3] = String(bmp.readAltitude(1013.25), 1);
+//  u8x8.print(LOG[3]);
 //  u8x8.print(" m");
 
   // Altitude from NEOGPS
@@ -202,7 +215,7 @@ static void doSomeWork()
       snprintf (secondchar, BufSizeTime, "%02d", second);
     }
 
-    LOG[1] = "";
+    LOG[1] = "T";
     LOG[1] += hourchar;
     LOG[1] += ":";
     LOG[1] += minutechar;
@@ -218,6 +231,7 @@ static void doSomeWork()
 
   if (fix.valid.date) {
     enum {BufSizeTime = 3};
+    enum {BufSizeYear= 5};
     int year = fix.dateTime.full_year();
     int month = fix.dateTime.month;
     int date = fix.dateTime.date;
@@ -225,7 +239,7 @@ static void doSomeWork()
     char yearchar[4];
     char monthchar[2];
     char datechar[2];
-    snprintf (yearchar, BufSizeTime, "%d", year);
+    snprintf (yearchar, BufSizeYear, "%d", year);
     snprintf (monthchar, BufSizeTime, "%d", month);
     snprintf (datechar, BufSizeTime, "%d", date);
 
@@ -240,9 +254,9 @@ static void doSomeWork()
 
     LOG[0] = "";
     LOG[0] += yearchar;
-    LOG[0] += "/";
+    LOG[0] += "-";
     LOG[0] += monthchar;
-    LOG[0] += "/";
+    LOG[0] += "-";
     LOG[0] += datechar;
   }
 
@@ -385,9 +399,9 @@ void log_header(String fileName) {
   File dataFile = SD.open(fileName, FILE_WRITE);
 
   if (dataFile) {
-    dataFile.println("---Data Log System---");
-    dataFile.println();
-    dataFile.println("Date, Time, Latitude, Longitude, Altitude, Temperature");
+    /* dataFile.println("---Data Log System---"); */
+    /* dataFile.println(); */
+    dataFile.println("DateTime, Latitude, Longitude, Altitude, Temperature");
     dataFile.close();
   }
   else {
@@ -401,7 +415,7 @@ void log_main(String fileName) {
 
   if (dataFile) {
     dataFile.print(LOG[0]);
-    dataFile.print(", ");
+    /* dataFile.print(", "); */
     dataFile.print(LOG[1]);
     dataFile.print(", ");
     dataFile.print(LOG[2]);
