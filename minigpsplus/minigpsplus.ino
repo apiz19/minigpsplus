@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include <Adafruit_BMP280.h>
 #include <NMEAGPS.h>
+#include <Streamers.h>
 #include <U8x8lib.h>
 #include <GPSport.h>
 #include <SPI.h>
@@ -19,7 +20,7 @@ String fileNames;
 int x;
 unsigned long m;
 int long_log = 1000;
-int log_temp = 0;
+int btState = 0;
 int btTemp[3] = {0, 0, 0};
 int xxx;
 uint32_t timer;
@@ -95,6 +96,8 @@ void setup() {
   u8x8.drawString(0, 0, "LAT");
   u8x8.drawString(0, 1, "LNG");
   u8x8.drawString(0, 2, "ALT");
+  u8x8.drawString(0, 3, "ELT");
+  u8x8.drawString(8, 3, "ELN");
 
   u8x8.drawString(0, 4, "FIX");
   u8x8.drawString(5, 4, "LOG");
@@ -163,7 +166,7 @@ static void doSomeWork()
   LOG[4] = String(fix.altitude(), 1);
   u8x8.print(LOG[4]+" m");
 
-  if (log_temp == 1) {
+  if (btState == 1) {
     u8x8.drawString(5, 5, "ON ");
     u8x8.setCursor(8, 5);
     u8x8.print(fileNames);
@@ -172,6 +175,25 @@ static void doSomeWork()
     u8x8.setCursor(8, 5);
     u8x8.print("      ");
   }
+
+// Print error LAT
+/* u8x8.drawString(0, 2, "ALT"); */
+/* u8x8.drawString(0, 3, "ELAT"); */
+/* u8x8.drawString(6, 3, "ELON"); */
+  String error_lat;
+  u8x8.setCursor(4, 3);
+  u8x8.print("  ");
+  u8x8.setCursor(4, 3);
+  error_lat = String(fix.lat_err(), 1);
+  u8x8.print(error_lat);
+
+// print error LON
+  String error_lon;
+  u8x8.setCursor(12, 3);
+  u8x8.print("  ");
+  u8x8.setCursor(12, 3);
+  error_lon= String(fix.lon_err(), 1);
+  u8x8.print(error_lon);
 
 
   enum {BufSizeTracked = 3}; //Space for 2 characters + NULL
@@ -367,7 +389,7 @@ void loop()
       x = 0;
       cek_filename();
       log_header(fileNames);
-      log_temp = 1;
+      btState = 1;
       m = millis();
 
       u8x8.drawString(5, 5, "ON ");
@@ -377,7 +399,7 @@ void loop()
     else if (btTemp[1] == 0 && btTemp[2] == 1) {
       Serial.println("Stop LOG");
       btTemp[2] = 0;
-      log_temp = 0;
+      btState = 0;
 
       u8x8.drawString(5, 5, "OFF");
       u8x8.setCursor(8, 5);
@@ -386,7 +408,7 @@ void loop()
   }
 
   if (millis() - m >= long_log) {
-    if (log_temp == 1) {
+    if (btState == 1) {
       log_main(fileNames);
     }
     m = millis();
