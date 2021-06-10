@@ -234,7 +234,7 @@ Project Link: [https://github.com/apiz19/minigpsplus](https://github.com/apiz19/
 [stars-url]: https://github.com/apiz19/minigpsplus/stargazers
 [issues-shield]: https://img.shields.io/github/issues/apiz19/minigpsplus.svg?style=for-the-badge
 [issues-url]: https://github.com/apiz19/minigpsplus/issues
-[license-shield]: https://img.shields.io/github/license/apiz19/minigpsplus.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge
 [license-url]: http://creativecommons.org/licenses/by-nc-sa/4.0/
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/hafiz-chairy-558b96175/
