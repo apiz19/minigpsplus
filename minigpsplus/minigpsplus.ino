@@ -1,7 +1,17 @@
+/******************************************************************************
+ *
+ * Filename       : minigpsplus.ino
+ * Copyright      : (CC-BY-NC) 2020
+ * Project        : MiniGPS+
+ *
+ * Revision History:
+ * Developer            Date       Change Description
+ * Hafiz C.             06/01/2021 Cleaning more lines
+ *****************************************************************************/
+
 #include <Wire.h>
 #include <Adafruit_BMP280.h>
 #include <NMEAGPS.h>
-#include <Streamers.h>
 #include <U8x8lib.h>
 #include <GPSport.h>
 #include <SPI.h>
@@ -96,13 +106,13 @@ void setup() {
   u8x8.drawString(0, 0, "LAT");
   u8x8.drawString(0, 1, "LNG");
   u8x8.drawString(0, 2, "ALT");
-  u8x8.drawString(0, 3, "ELT");
-  u8x8.drawString(8, 3, "ELN");
+//  u8x8.drawString(0, 3, "ELT");
+//  u8x8.drawString(8, 3, "ELN");
 
   u8x8.drawString(0, 4, "FIX");
   u8x8.drawString(5, 4, "LOG");
 
-  u8x8.drawString(0, 6, "AVL"); //5,6
+  u8x8.drawString(0, 6, "AVL");
   u8x8.drawString(5, 6, "TMP");
   u8x8.drawString(10, 6, "TME");
 
@@ -139,19 +149,20 @@ static void doSomeWork()
   u8x8.print(temp);
   u8x8.print("C");
 
+  // LOG temperature interval 30 menit
   uint8_t minute = fix.dateTime.minutes;
-    // LOG temp interval 30 menit
-    if(minute == 30) {
-        LOG[5] = temp;
-    }
-    else if(minute == 60) {
-        LOG[5] = temp;
-    }
-    else {
-        LOG[5] = "";
-    }
 
-  // Altitude from BM280
+  if(minute == 30) {
+      LOG[5] = temp;
+  }
+  else if(minute == 60) {
+      LOG[5] = temp;
+  }
+  else {
+      LOG[5] = "";
+  }
+
+//  Altitude from BM280
 //  u8x8.setCursor(4, 2);
 //  u8x8.print("     ");
 //  u8x8.setCursor(4, 2);
@@ -175,25 +186,6 @@ static void doSomeWork()
     u8x8.setCursor(8, 5);
     u8x8.print("      ");
   }
-
-// Print error LAT
-/* u8x8.drawString(0, 2, "ALT"); */
-/* u8x8.drawString(0, 3, "ELAT"); */
-/* u8x8.drawString(6, 3, "ELON"); */
-  String error_lat;
-  u8x8.setCursor(4, 3);
-  u8x8.print("  ");
-  u8x8.setCursor(4, 3);
-  error_lat = String(fix.lat_err(), 1);
-  u8x8.print(error_lat);
-
-// print error LON
-  String error_lon;
-  u8x8.setCursor(12, 3);
-  u8x8.print("  ");
-  u8x8.setCursor(12, 3);
-  error_lon= String(fix.lon_err(), 1);
-  u8x8.print(error_lon);
 
 
   enum {BufSizeTracked = 3}; //Space for 2 characters + NULL
@@ -326,6 +318,10 @@ static void doSomeWork()
     u8x8.print(lat_s, 0);      u8x8.print("\"");
     u8x8.print(lat_SouthN);
 
+  // Print error LAT
+  // String error_lat = String(fix.valid.lat_err);
+  // 8x8.setCursor(4, 3);        u8x8.print(error_lat);
+
     char longchar[10];
     dtostrf(fix.longitude(), 3, 7, longchar);
     //    u8x8.drawString(4, 1, longchar);
@@ -349,6 +345,10 @@ static void doSomeWork()
     u8x8.print(lat_m);         u8x8.print("'");
     u8x8.print(lat_s, 0);      u8x8.print("\"");
     u8x8.print(lat_SouthN);
+
+  // Print error LON
+  // String error_lon = String(fix.valid.lon_err);
+  // u8x8.setCursor(12, 3);        u8x8.print(error_lon);
 
   }
 }
@@ -421,8 +421,6 @@ void log_header(String fileName) {
   File dataFile = SD.open(fileName, FILE_WRITE);
 
   if (dataFile) {
-    /* dataFile.println("---Data Log System---"); */
-    /* dataFile.println(); */
     dataFile.println("DateTime, Latitude, Longitude, Altitude, Temperature");
     dataFile.close();
   }
