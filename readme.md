@@ -1,25 +1,4 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
-***
-***
-***
-*** To avoid retyping too much info. Do a search and replace for the following:
-*** apiz19, minigpsplus, twitter_handle, email, project_title, project_description
--->
-
-
-
 <!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -49,8 +28,6 @@
   </p>
 </p>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary><h2 style="display: inline-block">Daftar isi</h2></summary>
@@ -79,7 +56,6 @@
     <li><a href="#kontak">Kontak</a></li>
   </ol>
 </details>
-
 
 <!-- ABOUT THE PROJECT -->
 ## Latar belakang
@@ -144,16 +120,18 @@ Perbandingan selengkapnya dapat dilihat pada [Paper MGP](link_paper).
 * [U8g2](https://github.com/olikraus/u8g2) -- integrasi SSD1306, layout display
 * [SD](https://www.arduino.cc/en/Reference/SD) -- integrasi module MicroSD
 
-<p align="center">
+### Yang diperlukan
+  
+<details open="open">
+  <summary>Skema rangkaian</summary>
+  <p align="center">
     <img src="images/rangkaian_mgp.png" alt="Logo" width="500">
     </br>
     Rangkaian MiniGPS+
   </a>
+</details>
 
-Pastikan semua komponen kelistrikan terhubung seperti skema di atas.
-
-### Yang diperlukan
-
+- Pastikan semua komponen kelistrikan terhubung seperti skema di atas
 - [Arduino IDE / `arduino-cli`](https://www.arduino.cc/en/Main/Software_)
 - :coffee:
 
@@ -192,7 +170,7 @@ Jika proses kompilasi dan upload sukses, Anda sudah punya GPS sendiri, selamat m
 > TODO: more detail
 
 - on/off rekam trek denga push button
-- konversi `csv` menjadi `gpx` dilakukan dengan tools ini [csv2gpx-tracks](git.io/csv2gpx-tracks)
+- konversi `csv` menjadi `gpx` dilakukan dengan tools ini [csv2gpx-tracks](https://git.io/csv2gpx-tracks)
 
 <!-- CONTRIBUTING -->
 ## Kontribusi
