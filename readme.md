@@ -96,6 +96,7 @@ Perbandingan selengkapnya dapat dilihat pada [Paper MGP](link_paper).
 * Menampilkan elevasi
 * Menampilkan pembacaan suhu
 * Menampilkan informasi satelit
+* Waktu operasi ~21 jam
 
 <!-- GETTING STARTED -->
 ## Langkah awal
@@ -121,11 +122,11 @@ Perbandingan selengkapnya dapat dilihat pada [Paper MGP](link_paper).
 * [SD](https://www.arduino.cc/en/Reference/SD) -- integrasi module MicroSD
 
 ### Yang diperlukan
-  
+
 <details open="open">
   <summary>Skema rangkaian</summary>
   <p align="center">
-    <img src="images/rangkaian_mgp.png" alt="Logo" width="500">
+    <img src="images/skema_mgp.png" alt="Logo" width="500">
     </br>
     Rangkaian MiniGPS+
   </a>
